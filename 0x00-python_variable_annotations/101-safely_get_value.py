@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from typing import TypeVar, Mapping, Any, Union
 """a type-annotated function"""
+from typing import TypeVar, Mapping, Any, Union
 T = TypeVar('T')
 
 
