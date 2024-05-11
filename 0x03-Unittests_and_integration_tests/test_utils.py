@@ -65,15 +65,14 @@ class TestMemoize(unittest.TestCase):
                 """A memoized property"""
                 return self.a_method()
 
-        @patch.object(TestClass, 'a_method')
-        def test_memoize(self, mock_a_method):
-            """Inner test function to patch a_method and check calls"""
-            instance = self.TestClass()
+        test_obj = TestClass()
 
-            result1 = instance.a_property()
-            result2 = instance.a_property()
+        with patch.object(test_obj, 'a_method') as mock_method:
+            mock_method.return_value = 42
 
-            mock_a_method.assert_called_once()
+            result1 = test_obj.a_property
+            result2 = test_obj.a_property
 
             self.assertEqual(result1, 42)
             self.assertEqual(result2, 42)
+            mock_method.assert_called_once()
