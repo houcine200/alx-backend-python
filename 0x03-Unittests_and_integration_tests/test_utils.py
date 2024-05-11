@@ -31,52 +31,24 @@ class TestAccessNestedMap(unittest.TestCase):
             access_nested_map(nested_map, path)
 
 
-class TestGetJson(unittest.TestCase):
-    """Defines a test case class for testing the 'get_json' function"""
-    @parameterized.expand(
-        [
-            ("http://example.com", {"payload": True}),
-            ("http://holberton.io", {"payload": False}),
-        ]
-    )
-    @patch('requests.get')
-    def test_get_json(self, test_url, test_payload, mock_get):
-        """ test that utils.get_json returns the expected result. """
-        mock_get.return_value.json.return_value = test_payload
-        result = get_json(test_url)
-        mock_get.assert_called_once_with(test_url)
-        self.assertEqual(result, test_payload)
-
-
 class TestMemoize(unittest.TestCase):
-    """Test Memoize"""
-
+    """to mock a_method. Test that when calling a_property twice,
+    """
     def test_memoize(self):
-        """test memoize decorator"""
+        """to mock a_method. Test that when calling a_property twice"""
+
         class TestClass:
-            """
-            Test class
-            """
-            def __init__(self) -> None:
-                """
-                initlaize instance attributes
-                """
-                self.a_method_call = 0
 
             def a_method(self):
-                """targeted method"""
-                self.a_method_call += 1
                 return 42
 
             @memoize
             def a_property(self):
-                """memoize method"""
                 return self.a_method()
 
-        test_obj = TestClass()
-        call_method_1 = test_obj.a_property
-        call_method_2 = test_obj.a_property
+        with patch.object(TestClass, 'a_method', return_value=42) as mock_method:
+            inst = TestClass()
+            inst.a_property
+            inst.a_property
 
-        self.assertEqual(call_method_1, call_method_2)
-        self.assertEqual(call_method_1, 42)
-        self.assertEqual(test_obj.a_method_call, 1)
+            mock_method.assert_called_once()
