@@ -64,9 +64,8 @@ class TestMemoize(unittest.TestCase):
                 """doc doc doc"""
                 return self.a_method()
 
-        with patch.object(TestClass, 'a_method', return_value=42) as mock_method:
-            inst = TestClass()
-            inst.a_property
-            inst.a_property
-
-            mock_method.assert_called_once()
+        with patch.object(TestClass, "a_method", return_value=42) as mocked:
+            test_class = TestClass()
+            self.assertEqual(test_class.a_property, 42)
+            self.assertEqual(test_class.a_property, 42)
+            mocked.assert_called_once()
