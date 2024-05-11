@@ -12,10 +12,10 @@ from utils import get_json, memoize
 
 class TestAccessNestedMap(unittest.TestCase):
     @parameterized.expand([
-            ({"a": 1}, ("a",), 1),
-            ({"a": {"b": 2}}, ("a",), {"b": 2}),
-            ({"a": {"b": 2}}, ("a", "b"), 2),
-        ])
+        ({"a": 1}, ("a",), 1),
+        ({"a": {"b": 2}}, ("a",), {"b": 2}),
+        ({"a": {"b": 2}}, ("a", "b"), 2),
+    ])
     def test_access_nested_map(
         self, nested_map: Dict[str, Any], path: Tuple[str], expected: Any
     ) -> None:
@@ -40,7 +40,7 @@ class TestGetJson(unittest.TestCase):
         ]
     )
     @patch('requests.get')
-    def test_get_json(self,  test_url, test_payload, mock_get):
+    def test_get_json(self, test_url, test_payload, mock_get):
         """ test that utils.get_json returns the expected result. """
         mock_get.return_value.json.return_value = test_payload
         result = get_json(test_url)
@@ -51,6 +51,7 @@ class TestGetJson(unittest.TestCase):
 class TestMemoize(unittest.TestCase):
     """to mock a_method. Test that when calling a_property twice,
     """
+
     def test_memoize(self):
         """to mock a_method. Test that when calling a_property twice"""
 
@@ -61,12 +62,14 @@ class TestMemoize(unittest.TestCase):
 
             @memoize
             def a_property(self):
+                """A memoized property"""
                 return self.a_method()
 
         @patch.object(TestClass, 'a_method')
         def test_memoize(self, mock_a_method):
+            """Inner test function to patch a_method and check calls"""
             instance = self.TestClass()
-            
+
             result1 = instance.a_property()
             result2 = instance.a_property()
 
