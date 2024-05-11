@@ -49,24 +49,29 @@ class TestGetJson(unittest.TestCase):
 
 
 class TestMemoize(unittest.TestCase):
-    """to mock a_method. Test that when calling a_property twice,
-    """
-
+    """Defines a test case class for testing memoization"""
     def test_memoize(self):
-        """to mock a_method. Test that when calling a_property twice"""
-
+        """Test memoization by mocking a_method and checking property calls"""
         class TestClass:
+            """doc doc doc"""
 
-            def a_method(self):
+            def a_method(self) -> int:
+                """doc doc doc"""
                 return 42
 
             @memoize
-            def a_property(self):
-                """A memoized property"""
+            def a_property(self) -> int:
+                """doc doc doc"""
                 return self.a_method()
 
-        with patch.object(TestClass, "a_method", return_value=42) as mocked:
-            test_class = TestClass()
-            self.assertEqual(test_class.a_property, 42)
-            self.assertEqual(test_class.a_property, 42)
-            mocked.assert_called_once()
+        with patch.object(TestClass, 'a_method') as mock_method:
+            test_obj = TestClass()
+            mock_method.return_value = 42
+
+            result1 = test_obj.a_property
+            result2 = test_obj.a_property
+
+            mock_method.assert_called_once()
+
+            self.assertEqual(result1, 42)
+            self.assertEqual(result2, 42)
